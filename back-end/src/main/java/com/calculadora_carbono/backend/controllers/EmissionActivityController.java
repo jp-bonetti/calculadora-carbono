@@ -1,6 +1,7 @@
 package com.calculadora_carbono.backend.controllers;
 
 import com.calculadora_carbono.backend.dtos.EmissionActivityDTO;
+import com.calculadora_carbono.backend.dtos.ResultDTO;
 import com.calculadora_carbono.backend.dtos.mappers.EmissionActivityMapper;
 import com.calculadora_carbono.backend.entities.Category;
 import com.calculadora_carbono.backend.entities.EmissionActivity;
@@ -10,6 +11,8 @@ import com.calculadora_carbono.backend.services.EmissionActivityService;
 import com.calculadora_carbono.backend.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -61,26 +64,45 @@ public class EmissionActivityController {
     }
 
     @GetMapping("/users/{usersId}/emissions")
-    public Double calculateTotalEmissions(@PathVariable Long usersId) {
+    public ResponseEntity<ResultDTO> calculateTotalEmissions(@PathVariable Long usersId) {
 
-        return service.calculateTotalEmissions(usersId);
+        ResultDTO result = new ResultDTO();
+
+        result.setResult(service.calculateTotalEmissions(usersId));
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/users/{usersId}/emissions/{categoryId}")
-    public Double calculateEmissionsByCategory(@PathVariable Long usersId, @PathVariable Long categoryId) {
-        return service.calculateEmissionsByCategory(usersId, categoryId);
+    public ResponseEntity<ResultDTO> calculateEmissionsByCategory(@PathVariable Long usersId, @PathVariable Long categoryId) {
+
+        ResultDTO result = new ResultDTO();
+
+        result.setResult(service.calculateEmissionsByCategory(usersId, categoryId));
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/users/{usersId}/emissions/day")
-    public Double calculateEmissionsPerDay(@PathVariable Long usersId, @RequestParam("day") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate day) {
-        return service.calculateEmissionsPerDay(usersId, day);
+    public ResponseEntity<ResultDTO> calculateEmissionsPerDay(@PathVariable Long usersId, @RequestParam("day") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate day) {
+
+        ResultDTO result = new ResultDTO();
+
+        result.setResult(service.calculateEmissionsPerDay(usersId, day));
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/users/{usersId}/emissions/period")
-    public Double calculateEmissionsPerPeriod(@PathVariable Long usersId,
-                                            @RequestParam("startDay") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDay,
-                                            @RequestParam("finalDay") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate finalDay) {
-        return service.calculateEmissionsPerPeriod(usersId, startDay, finalDay);
+    public ResponseEntity<ResultDTO> calculateEmissionsPerPeriod(@PathVariable Long usersId,
+                                                                 @RequestParam("startDay") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDay,
+                                                                 @RequestParam("finalDay") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate finalDay) {
+
+        ResultDTO result = new ResultDTO();
+
+        result.setResult(service.calculateEmissionsPerPeriod(usersId, startDay, finalDay));
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 

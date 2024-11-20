@@ -1,5 +1,6 @@
 package com.calculadora_carbono.backend.services;
 
+import com.calculadora_carbono.backend.dtos.ResultDTO;
 import com.calculadora_carbono.backend.entities.Category;
 import com.calculadora_carbono.backend.entities.EmissionActivity;
 import com.calculadora_carbono.backend.repositories.EmissionActivityRepository;
@@ -42,6 +43,7 @@ public class EmissionActivityService {
 
     public Double calculateEmissionsPerDay(Long userId, LocalDate day) {
         List<EmissionActivity> activities = repository.findByUsersId(userId);
+
         return activities.stream()
                 .filter(activity -> activity.getCreationDate().toLocalDate().isEqual(day))
                 .mapToDouble(activity -> activity.getQuantity() * activity.getCategory().getEmissionFactor())
@@ -50,6 +52,7 @@ public class EmissionActivityService {
 
     public Double calculateEmissionsPerPeriod(Long userId, LocalDate startDay, LocalDate finalDay) {
         List<EmissionActivity> activities = repository.findByUsersId(userId);
+
         return activities.stream()
                 .filter(activity -> {
                     LocalDate date = activity.getCreationDate().toLocalDate();
