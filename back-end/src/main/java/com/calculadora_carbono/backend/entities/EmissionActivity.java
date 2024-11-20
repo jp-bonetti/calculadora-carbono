@@ -3,11 +3,13 @@ package com.calculadora_carbono.backend.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Data
+@ToString(exclude = {"users", "category"})
 public class EmissionActivity {
 
     @Id
@@ -18,13 +20,11 @@ public class EmissionActivity {
     @Column(nullable = false)
     private Double quantity;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "users_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Users users;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Category category;
 

@@ -1,14 +1,17 @@
 package com.calculadora_carbono.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Category {
 
     @Id
@@ -21,7 +24,7 @@ public class Category {
     @Column(nullable = false)
     private Double emissionFactor;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category")
     private List<EmissionActivity> emissionActivities;
 
 }

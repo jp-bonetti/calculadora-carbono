@@ -7,6 +7,7 @@ import com.calculadora_carbono.backend.dtos.mappers.LoginMapper;
 import com.calculadora_carbono.backend.dtos.mappers.UsersMapper;
 import com.calculadora_carbono.backend.entities.Users;
 import com.calculadora_carbono.backend.services.UsersService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UsersController {
 
-    @Autowired
-    private UsersService service;
+    private final UsersService service;
 
     @GetMapping
     public List<UsersDTO> findAll() {

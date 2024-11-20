@@ -13,6 +13,7 @@ import com.calculadora_carbono.backend.exceptions.ResourceNotFoundException;
 import com.calculadora_carbono.backend.services.CategoryService;
 import com.calculadora_carbono.backend.services.EmissionActivityService;
 import com.calculadora_carbono.backend.services.UsersService;
+import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,10 +27,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/emissions")
+@RequiredArgsConstructor
 public class EmissionActivityController {
 
-    @Autowired
-    private EmissionActivityService service;
+
+    private final EmissionActivityService service;
 
     @PostMapping("/users/{usersId}/category/{categoryId}/activities")
     public ResponseEntity<MessageDTO> addActivity(@PathVariable Long usersId, @PathVariable Long categoryId, @RequestBody QuantityDTO quantityDTO) {
@@ -37,6 +39,22 @@ public class EmissionActivityController {
         service.addActivity(usersId, categoryId, quantityDTO);
 
         return new ResponseEntity<>(new MessageDTO("Activity added"), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/users/{usersId}/activities/{activityId}")
+    public ResponseEntity<MessageDTO> deleteActivity(@PathVariable Long usersId, @PathVariable Long activityId) {
+
+        service.deleteActivity(usersId, activityId);
+
+        return new ResponseEntity<>(new MessageDTO("Activity deleted"), HttpStatus.OK);
+    }
+
+    @PutMapping("/users/{usersId}/activities/{activityId}")
+    public ResponseEntity<MessageDTO> updateActivity(@PathVariable Long usersId, @PathVariable Long activityId, @RequestBody QuantityDTO quantityDTO) {
+
+        service.updateActivity(usersId, activityId, quantityDTO);
+
+        return new ResponseEntity<>(new MessageDTO("Activity updated"), HttpStatus.OK);
     }
 
     @GetMapping("/users/{usersId}/emissions")

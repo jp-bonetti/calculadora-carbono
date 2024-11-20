@@ -28,9 +28,7 @@ public class UsersService {
 
     public Users findById(Long id) {
 
-        Users users = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        return users;
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     public void addUsers(Users users) {

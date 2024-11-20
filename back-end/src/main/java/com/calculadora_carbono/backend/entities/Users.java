@@ -1,5 +1,6 @@
 package com.calculadora_carbono.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +22,8 @@ public class Users {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<EmissionActivity> emissionActivities = new ArrayList<EmissionActivity>();
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<EmissionActivity> emissionActivities;
 
     private LocalDateTime creationDate;
     private LocalDateTime changeDate;

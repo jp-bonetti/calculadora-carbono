@@ -3,8 +3,6 @@ package com.calculadora_carbono.backend.dtos.mappers;
 import com.calculadora_carbono.backend.dtos.UsersDTO;
 import com.calculadora_carbono.backend.entities.Users;
 
-import java.util.stream.Collectors;
-
 public class UsersMapper {
 
     public static UsersDTO toDTO(Users users) {
