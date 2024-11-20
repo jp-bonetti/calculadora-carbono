@@ -25,11 +25,33 @@ public class CategoryController {
         return service.findAll().stream().map(CategoryMapper::toDTO).toList();
     }
 
+    @GetMapping("/{id}")
+    public CategoryDTO findById(@PathVariable Long id) {
+
+        return CategoryMapper.toDTO(service.findById(id));
+    }
+
     @PostMapping
     public ResponseEntity<MessageDTO> addCategory(@RequestBody CategoryDTO categoryDTO) {
 
         service.addCategory(CategoryMapper.toEntity(categoryDTO));
 
         return new ResponseEntity<>(new MessageDTO("Category created"), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageDTO> deleteCategory(@PathVariable Long id) {
+
+        service.deleteCategory(id);
+
+        return new ResponseEntity<>(new MessageDTO("Category deleted"), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MessageDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
+
+        service.updateCategory(id, categoryDTO);
+
+        return new ResponseEntity<>(new MessageDTO("Category updated"), HttpStatus.OK);
     }
 }
