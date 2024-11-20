@@ -1,5 +1,6 @@
 package com.calculadora_carbono.backend.services;
 
+import com.calculadora_carbono.backend.dtos.UsersDTO;
 import com.calculadora_carbono.backend.entities.EmissionActivity;
 import com.calculadora_carbono.backend.entities.Users;
 import com.calculadora_carbono.backend.exceptions.DuplicateEmailException;
@@ -45,5 +46,39 @@ public class UsersService {
         }
 
         repository.save(users);
+    }
+
+    public void deleteUsers(Long id) {
+
+        this.findById(id);
+
+        repository.deleteById(id);
+    }
+
+    public void updateUsers(Long id, UsersDTO usersDTO){
+
+            Users users = this.findById(id);
+
+            users.setId(id);
+
+            if(usersDTO.getName() != null && !usersDTO.getName().isEmpty())
+            {
+                users.setName(usersDTO.getName());
+            }
+            else
+            {
+                throw new RequiredFieldNotFoundException("Name is required");
+            }
+
+            if(usersDTO.getEmail() != null && !usersDTO.getEmail().isEmpty())
+            {
+                users.setEmail(usersDTO.getEmail());
+            }
+            else
+            {
+                throw new RequiredFieldNotFoundException("Email is required");
+            }
+
+            repository.save(users);
     }
 }

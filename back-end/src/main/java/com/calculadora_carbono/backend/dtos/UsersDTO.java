@@ -14,6 +14,7 @@ public class UsersDTO {
 
     private Long userId;
     private String name;
+    private String email;
     private List<EmissionActivityDTO> emissionActivitiesDTO = new ArrayList<EmissionActivityDTO>();
 
 }

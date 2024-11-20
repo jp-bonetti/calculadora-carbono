@@ -10,6 +10,7 @@ import com.calculadora_carbono.backend.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,5 +40,21 @@ public class UsersController {
 
             return new ResponseEntity<>(new MessageDTO("User created"), HttpStatus.CREATED);
 
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageDTO> deleteUsers(@PathVariable Long id) {
+
+        service.deleteUsers(id);
+
+        return new ResponseEntity<>(new MessageDTO("User deleted"), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MessageDTO> updateUsers(@PathVariable Long id, @RequestBody UsersDTO usersDTO) {
+
+        service.updateUsers(id, usersDTO);
+
+        return new ResponseEntity<>(new MessageDTO("User updated"), HttpStatus.OK);
     }
 }
