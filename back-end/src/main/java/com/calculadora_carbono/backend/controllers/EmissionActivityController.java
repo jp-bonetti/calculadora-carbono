@@ -5,25 +5,15 @@ import com.calculadora_carbono.backend.dtos.MessageDTO;
 import com.calculadora_carbono.backend.dtos.QuantityDTO;
 import com.calculadora_carbono.backend.dtos.ResultDTO;
 import com.calculadora_carbono.backend.dtos.mappers.EmissionActivityMapper;
-import com.calculadora_carbono.backend.entities.Category;
-import com.calculadora_carbono.backend.entities.EmissionActivity;
-import com.calculadora_carbono.backend.entities.Users;
-import com.calculadora_carbono.backend.exceptions.InvalidQuantityException;
-import com.calculadora_carbono.backend.exceptions.ResourceNotFoundException;
-import com.calculadora_carbono.backend.services.CategoryService;
 import com.calculadora_carbono.backend.services.EmissionActivityService;
-import com.calculadora_carbono.backend.services.UsersService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/emissions")
@@ -32,6 +22,14 @@ public class EmissionActivityController {
 
 
     private final EmissionActivityService service;
+
+    @GetMapping("/activities/{usersId}")
+    public ResponseEntity<List<EmissionActivityDTO>> findAll(@PathVariable Long usersId) {
+
+        return new ResponseEntity<>(
+                service.findAll(usersId).stream().map(EmissionActivityMapper::toDTO).toList(), HttpStatus.OK
+        );
+    }
 
     @PostMapping("/users/{usersId}/category/{categoryId}/activities")
     public ResponseEntity<MessageDTO> addActivity(@PathVariable Long usersId, @PathVariable Long categoryId, @RequestBody QuantityDTO quantityDTO) {

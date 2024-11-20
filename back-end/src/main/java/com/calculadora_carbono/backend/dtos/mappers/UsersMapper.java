@@ -10,7 +10,6 @@ public class UsersMapper {
         usersDTO.setUserId(users.getId());
         usersDTO.setName(users.getName());
         usersDTO.setEmail(users.getEmail());
-        usersDTO.getEmissionActivitiesDTO().addAll(users.getEmissionActivities().stream().map(EmissionActivityMapper::toDTO).toList());
         return usersDTO;
     }
 
@@ -19,7 +18,6 @@ public class UsersMapper {
         users.setId(usersDTO.getUserId());
         users.setName(usersDTO.getName());
         users.setEmail(usersDTO.getEmail());
-        users.getEmissionActivities().addAll(usersDTO.getEmissionActivitiesDTO().stream().map(EmissionActivityMapper::toEntity).toList());
         return users;
     }
 }
