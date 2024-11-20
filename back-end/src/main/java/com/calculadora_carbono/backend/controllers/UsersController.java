@@ -6,10 +6,8 @@ import com.calculadora_carbono.backend.dtos.mappers.LoginMapper;
 import com.calculadora_carbono.backend.dtos.mappers.UsersMapper;
 import com.calculadora_carbono.backend.entities.Users;
 import com.calculadora_carbono.backend.services.UsersService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +32,7 @@ public class UsersController {
     }
 
     @PostMapping
-    public ResponseEntity<Users> save(@RequestBody @Valid LoginDTO loginDTO) {
+    public ResponseEntity<Users> save(@RequestBody LoginDTO loginDTO) {
 
             Users users = service.save(LoginMapper.toEntity(loginDTO));
             return new ResponseEntity<Users>(users, HttpStatus.CREATED);

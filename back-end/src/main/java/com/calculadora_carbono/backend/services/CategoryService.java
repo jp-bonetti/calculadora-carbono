@@ -16,7 +16,7 @@ public class CategoryService {
 
     public Optional<Category> findById(Long id) {
 
-        return Optional.of(repository.findById(id).orElseThrow());
+        return repository.findById(id);
 
     }
 

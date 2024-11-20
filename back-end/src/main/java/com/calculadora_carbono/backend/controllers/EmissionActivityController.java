@@ -1,14 +1,19 @@
 package com.calculadora_carbono.backend.controllers;
 
 import com.calculadora_carbono.backend.dtos.EmissionActivityDTO;
+import com.calculadora_carbono.backend.dtos.MessageDTO;
+import com.calculadora_carbono.backend.dtos.QuantityDTO;
 import com.calculadora_carbono.backend.dtos.ResultDTO;
 import com.calculadora_carbono.backend.dtos.mappers.EmissionActivityMapper;
 import com.calculadora_carbono.backend.entities.Category;
 import com.calculadora_carbono.backend.entities.EmissionActivity;
 import com.calculadora_carbono.backend.entities.Users;
+import com.calculadora_carbono.backend.exceptions.InvalidQuantityException;
+import com.calculadora_carbono.backend.exceptions.ResourceNotFoundException;
 import com.calculadora_carbono.backend.services.CategoryService;
 import com.calculadora_carbono.backend.services.EmissionActivityService;
 import com.calculadora_carbono.backend.services.UsersService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -26,41 +31,12 @@ public class EmissionActivityController {
     @Autowired
     private EmissionActivityService service;
 
-    @Autowired
-    private UsersService usersService;
-
-    @Autowired
-    private CategoryService categoryService;
-
-
     @PostMapping("/users/{usersId}/category/{categoryId}/activities")
-    public EmissionActivity addActivity(@PathVariable Long usersId, @PathVariable Long categoryId, @RequestBody Double emission){
+    public ResponseEntity<MessageDTO> addActivity(@PathVariable Long usersId, @PathVariable Long categoryId, @RequestBody QuantityDTO quantityDTO) {
 
-        Optional<Users> users = usersService.findById(usersId);
-        Optional<Category> category = categoryService.findById(categoryId);
+        service.addActivity(usersId, categoryId, quantityDTO);
 
-        EmissionActivity emissionActivity = new EmissionActivity();
-        emissionActivity.setQuantity(emission);
-
-        if(category.isEmpty())
-        {
-            throw new RuntimeException("Category not found");
-        }
-        else
-        {
-            emissionActivity.setCategory(category.get());
-        }
-
-        if(users.isEmpty())
-        {
-            throw new RuntimeException("User not found");
-        }
-        else
-        {
-            emissionActivity.setUsers(users.get());
-        }
-
-        return service.save(emissionActivity);
+        return new ResponseEntity<MessageDTO>(new MessageDTO("Activity added"), HttpStatus.CREATED);
     }
 
     @GetMapping("/users/{usersId}/emissions")

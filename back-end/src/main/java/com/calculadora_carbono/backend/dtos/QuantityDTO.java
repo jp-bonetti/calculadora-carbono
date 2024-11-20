@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmissionActivityDTO {
+public class QuantityDTO {
 
-    private Long emissionActivityId;
     private Double quantity;
-    private CategoryDTO categoryDTO;
 }

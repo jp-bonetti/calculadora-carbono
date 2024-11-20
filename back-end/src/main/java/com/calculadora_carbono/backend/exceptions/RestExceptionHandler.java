@@ -2,6 +2,7 @@ package com.calculadora_carbono.backend.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -11,16 +12,28 @@ import java.util.List;
 @RestControllerAdvice
 public class RestExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> genericException(Exception ex) {
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ApiError> genericException(Exception ex) {
+//        ApiError apiError = ApiError
+//                .builder()
+//                .timestamp(LocalDateTime.now())
+//                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+//                .status(HttpStatus.INTERNAL_SERVER_ERROR.name())
+//                .errors(List.of(ex.getMessage()))
+//                .build();
+//        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiError> httpMessageNotReadableException(HttpMessageNotReadableException ex) {
         ApiError apiError = ApiError
                 .builder()
                 .timestamp(LocalDateTime.now())
-                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.name())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST.name())
                 .errors(List.of(ex.getMessage()))
                 .build();
-        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RequiredFieldNotFoundException.class)
@@ -58,6 +71,18 @@ public class RestExceptionHandler {
                 .errors(List.of(ex.getMessage()))
                 .build();
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidQuantityException.class)
+    public ResponseEntity<ApiError> invalidQuantityException(InvalidQuantityException ex) {
+        ApiError apiError = ApiError
+                .builder()
+                .timestamp(LocalDateTime.now())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST.name())
+                .errors(List.of(ex.getMessage()))
+                .build();
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 }
 

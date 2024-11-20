@@ -1,14 +1,16 @@
 package com.calculadora_carbono.backend.services;
 
-import com.calculadora_carbono.backend.dtos.ResultDTO;
+import com.calculadora_carbono.backend.dtos.QuantityDTO;
 import com.calculadora_carbono.backend.entities.Category;
 import com.calculadora_carbono.backend.entities.EmissionActivity;
+import com.calculadora_carbono.backend.entities.Users;
+import com.calculadora_carbono.backend.exceptions.InvalidQuantityException;
+import com.calculadora_carbono.backend.exceptions.ResourceNotFoundException;
 import com.calculadora_carbono.backend.repositories.EmissionActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +23,26 @@ public class EmissionActivityService {
     @Autowired
     private CategoryService categoryService;
 
-    public EmissionActivity save(EmissionActivity emissionActivity) {
-        return repository.save(emissionActivity);
+    @Autowired
+    private UsersService usersService;
+
+    public void addActivity(Long userId, Long categoryId, QuantityDTO quantityDTO) {
+
+        Users users = usersService.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        Category category = categoryService.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+        EmissionActivity emissionActivity = new EmissionActivity();
+
+        emissionActivity.setUsers(users);
+        emissionActivity.setCategory(category);
+
+        if (quantityDTO.getQuantity() <= 0) {
+            throw new InvalidQuantityException("Quantity must be greater than 0");
+        }
+
+        emissionActivity.setQuantity(quantityDTO.getQuantity());
+
+        repository.save(emissionActivity);
     }
 
     public Double calculateTotalEmissions(Long userId) {
