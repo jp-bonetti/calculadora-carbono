@@ -27,8 +27,19 @@ public class EmissionActivityService {
 
     private final UsersService usersService;
 
-    public List<EmissionActivity> findAll(Long usersId){
+    public List<EmissionActivity> findByUsersId(Long usersId){
+
+        usersService.findById(usersId);
+
         return repository.findByUsersId(usersId);
+    }
+
+    public List<EmissionActivity> findByUsersIdAndCategoryId(Long usersId, Long categoryId) {
+
+        usersService.findById(usersId);
+        categoryService.findById(categoryId);
+
+        return repository.findByUsersIdAndCategoryId(usersId, categoryId);
     }
 
     public void addActivity(Long userId, Long categoryId, QuantityDTO quantityDTO) {

@@ -11,4 +11,6 @@ import java.util.List;
 public interface EmissionActivityRepository extends JpaRepository<EmissionActivity, Long> {
 
     List<EmissionActivity> findByUsersId(Long usersId);
+
+    List<EmissionActivity> findByUsersIdAndCategoryId(Long usersId, Long categoryId);
 }

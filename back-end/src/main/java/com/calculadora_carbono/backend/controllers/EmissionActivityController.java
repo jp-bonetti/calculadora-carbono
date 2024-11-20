@@ -23,12 +23,20 @@ public class EmissionActivityController {
 
     private final EmissionActivityService service;
 
-    @GetMapping("/activities/{usersId}")
-    public ResponseEntity<List<EmissionActivityDTO>> findAll(@PathVariable Long usersId) {
+    @GetMapping("/activities/users/{usersId}")
+    public ResponseEntity<List<EmissionActivityDTO>> findByUsersId(@PathVariable Long usersId) {
 
         return new ResponseEntity<>(
-                service.findAll(usersId).stream().map(EmissionActivityMapper::toDTO).toList(), HttpStatus.OK
+                service.findByUsersId(usersId).stream().map(EmissionActivityMapper::toDTO).toList(), HttpStatus.OK
         );
+    }
+
+    @GetMapping("/activities/users/{usersId}/category/{categoryId}")
+    public ResponseEntity<List<EmissionActivityDTO>> findByUsersIdAndCategoryId(@PathVariable Long usersId, @PathVariable Long categoryId) {
+
+            return new ResponseEntity<>(
+                    service.findByUsersIdAndCategoryId(usersId, categoryId).stream().map(EmissionActivityMapper::toDTO).toList(), HttpStatus.OK
+            );
     }
 
     @PostMapping("/users/{usersId}/category/{categoryId}/activities")
