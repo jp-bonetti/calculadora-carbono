@@ -1,6 +1,7 @@
 package com.calculadora_carbono.backend.services;
 
 import com.calculadora_carbono.backend.dtos.QuantityDTO;
+import com.calculadora_carbono.backend.dtos.ResultDTO;
 import com.calculadora_carbono.backend.entities.Category;
 import com.calculadora_carbono.backend.entities.EmissionActivity;
 import com.calculadora_carbono.backend.entities.Users;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,10 +28,10 @@ public class EmissionActivityService {
     @Autowired
     private UsersService usersService;
 
-    public void addActivity(Long userId, Long categoryId, QuantityDTO quantityDTO) {
+    public EmissionActivity addActivity(Long userId, Long categoryId, QuantityDTO quantityDTO) {
 
-        Users users = usersService.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        Category category = categoryService.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        Users users = usersService.findById(userId);
+        Category category = categoryService.findById(categoryId);
 
         EmissionActivity emissionActivity = new EmissionActivity();
 
@@ -42,7 +44,7 @@ public class EmissionActivityService {
 
         emissionActivity.setQuantity(quantityDTO.getQuantity());
 
-        repository.save(emissionActivity);
+        return repository.save(emissionActivity);
     }
 
     public Double calculateTotalEmissions(Long userId) {
@@ -54,9 +56,9 @@ public class EmissionActivityService {
 
     public Double calculateEmissionsByCategory(Long userId, Long categoryId) {
         List<EmissionActivity> activities = repository.findByUsersId(userId);
-        Optional<Category> category = categoryService.findById(categoryId);
+        Category category = categoryService.findById(categoryId);
         return activities.stream()
-                .filter(activity -> activity.getCategory() == category.get())
+                .filter(activity -> activity.getCategory() == category)
                 .mapToDouble(activity -> activity.getQuantity() * activity.getCategory().getEmissionFactor())
                 .sum();
     }

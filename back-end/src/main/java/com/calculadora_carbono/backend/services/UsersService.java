@@ -23,18 +23,14 @@ public class UsersService {
         return repository.findAll();
     }
 
-    public Optional<Users> findById(Long id) {
+    public Users findById(Long id) {
 
-        Optional<Users> users = repository.findById(id);
-
-        if (users.isEmpty()) {
-            throw new ResourceNotFoundException("User not found");
-        }
+        Users users = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         return users;
     }
 
-    public Users save(Users users) {
+    public void addUsers(Users users) {
 
         if(users.getName() == null || users.getName().isEmpty()) {
             throw new RequiredFieldNotFoundException("Name is required");
@@ -48,6 +44,6 @@ public class UsersService {
             throw new DuplicateEmailException("Email already exists");
         }
 
-        return repository.save(users);
+        repository.save(users);
     }
 }

@@ -1,6 +1,7 @@
 package com.calculadora_carbono.backend.controllers;
 
 import com.calculadora_carbono.backend.dtos.LoginDTO;
+import com.calculadora_carbono.backend.dtos.MessageDTO;
 import com.calculadora_carbono.backend.dtos.UsersDTO;
 import com.calculadora_carbono.backend.dtos.mappers.LoginMapper;
 import com.calculadora_carbono.backend.dtos.mappers.UsersMapper;
@@ -23,19 +24,20 @@ public class UsersController {
 
     @GetMapping
     public List<UsersDTO> findAll() {
-        return service.findAll().stream().map(UsersMapper::toDTO).toList();
+        return new ResponseEntity<>(service.findAll().stream().map(UsersMapper::toDTO).toList(), HttpStatus.OK).getBody();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UsersDTO> findById(@PathVariable Long id) {
-        return new ResponseEntity<UsersDTO>(UsersMapper.toDTO(service.findById(id).get()), HttpStatus.OK);
+        return new ResponseEntity<>(UsersMapper.toDTO(service.findById(id)), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Users> save(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<MessageDTO> addUsers(@RequestBody LoginDTO loginDTO) {
 
-            Users users = service.save(LoginMapper.toEntity(loginDTO));
-            return new ResponseEntity<Users>(users, HttpStatus.CREATED);
+            service.addUsers(LoginMapper.toEntity(loginDTO));
+
+            return new ResponseEntity<>(new MessageDTO("User created"), HttpStatus.CREATED);
 
     }
 }

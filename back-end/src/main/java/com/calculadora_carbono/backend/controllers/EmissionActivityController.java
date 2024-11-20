@@ -36,7 +36,7 @@ public class EmissionActivityController {
 
         service.addActivity(usersId, categoryId, quantityDTO);
 
-        return new ResponseEntity<MessageDTO>(new MessageDTO("Activity added"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new MessageDTO("Activity added"), HttpStatus.CREATED);
     }
 
     @GetMapping("/users/{usersId}/emissions")
