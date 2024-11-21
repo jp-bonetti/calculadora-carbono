@@ -22,10 +22,6 @@ public class UsersService {
     @Autowired
     private UsersRepository repository;
 
-    public List<Users> findAll() {
-        return repository.findAll();
-    }
-
     public Users findById(Long id) {
 
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));

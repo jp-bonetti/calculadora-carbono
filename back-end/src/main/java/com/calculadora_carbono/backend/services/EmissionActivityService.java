@@ -36,16 +36,15 @@ public class EmissionActivityService {
 
     public List<EmissionActivity> findByUsersIdAndCategoryId(Long usersId, Long categoryId) {
 
-        usersService.findById(usersId);
-        categoryService.findById(categoryId);
+        categoryService.findById(categoryId, usersId);
 
         return repository.findByUsersIdAndCategoryId(usersId, categoryId);
     }
 
-    public void addActivity(Long userId, Long categoryId, QuantityDTO quantityDTO) {
+    public void addActivity(Long usersId, Long categoryId, QuantityDTO quantityDTO) {
 
-        Users users = usersService.findById(userId);
-        Category category = categoryService.findById(categoryId);
+        Users users = usersService.findById(usersId);
+        Category category = categoryService.findById(categoryId, usersId);
 
         EmissionActivity emissionActivity = new EmissionActivity();
 
@@ -104,9 +103,9 @@ public class EmissionActivityService {
                 .sum();
     }
 
-    public Double calculateEmissionsByCategory(Long userId, Long categoryId) {
-        List<EmissionActivity> activities = repository.findByUsersId(userId);
-        Category category = categoryService.findById(categoryId);
+    public Double calculateEmissionsByCategory(Long categoryId, Long usersId) {
+        List<EmissionActivity> activities = repository.findByUsersId(usersId);
+        Category category = categoryService.findById(categoryId, usersId);
         return activities.stream()
                 .filter(activity -> activity.getCategory() == category)
                 .mapToDouble(activity -> activity.getQuantity() * activity.getCategory().getEmissionFactor())

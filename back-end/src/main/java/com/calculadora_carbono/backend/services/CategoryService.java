@@ -28,14 +28,16 @@ public class CategoryService {
 
     private final UsersService usersService;
 
-    public Category findById(Long id) {
+    public Category findById(Long id, Long userId) {
 
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        Users users = usersService.findById(userId);
+
+        return repository.findByIdAndUsers(id, users).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
     }
 
-    public List<Category> findAll() {
-        return repository.findAll();
+    public List<Category> findByUsersId(Long usersId) {
+        return repository.findByUsersId(usersId);
     }
 
     public void addCategory(CategoryDTO categoryDTO, Long usersId) {
@@ -44,6 +46,8 @@ public class CategoryService {
 
         Category category = CategoryMapper.toEntity(categoryDTO);
 
+        category.setUsers(users);
+
         repository.findByNameAndUsers(category.getName(), users).ifPresent(c -> {
             throw new CategoryAlreadyExistsException("Category already exists");
         });
@@ -51,9 +55,10 @@ public class CategoryService {
         repository.save(category);
     }
 
-    public void deleteCategory(Long id){
+    public void deleteCategory(Long id, Long usersId ){
 
-        this.findById(id);
+        repository.findByIdAndUsers(id, usersService.findById(usersId))
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         try
         {
@@ -67,9 +72,9 @@ public class CategoryService {
 
     }
 
-    public void updateCategory(Long id, CategoryDTO categoryDTO) {
+    public void updateCategory(Long id, CategoryDTO categoryDTO, Long usersId) {
 
-        Category category = this.findById(id);
+        Category category = this.findById(id, usersId);
 
         category.setId(id);
         category.setName(categoryDTO.getName());

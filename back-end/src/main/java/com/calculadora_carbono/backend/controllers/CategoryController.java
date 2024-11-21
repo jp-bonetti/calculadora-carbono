@@ -25,15 +25,23 @@ public class CategoryController {
     private final JWTService jwtService;
 
     @GetMapping
-    public List<CategoryDTO> findAll() {
+    public List<CategoryDTO> findByUsersId(HttpServletRequest request) {
 
-        return service.findAll().stream().map(CategoryMapper::toDTO).toList();
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long usersId = jwtService.extractUserId(token);
+
+        return service.findByUsersId(usersId).stream().map(CategoryMapper::toDTO).toList();
     }
 
     @GetMapping("/{id}")
-    public CategoryDTO findById(@PathVariable Long id) {
+    public CategoryDTO findById(HttpServletRequest request, @PathVariable Long id) {
 
-        return CategoryMapper.toDTO(service.findById(id));
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long usersId = jwtService.extractUserId(token);
+
+        return CategoryMapper.toDTO(service.findById(id, usersId));
     }
 
     @PostMapping
@@ -49,17 +57,25 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<MessageDTO> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<MessageDTO> deleteCategory(HttpServletRequest request, @PathVariable Long id) {
 
-        service.deleteCategory(id);
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long usersId = jwtService.extractUserId(token);
+
+        service.deleteCategory(id, usersId);
 
         return new ResponseEntity<>(new MessageDTO("Category deleted"), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MessageDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<MessageDTO> updateCategory(HttpServletRequest request, @PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
 
-        service.updateCategory(id, categoryDTO);
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long usersId = jwtService.extractUserId(token);
+
+        service.updateCategory(id, categoryDTO, usersId);
 
         return new ResponseEntity<>(new MessageDTO("Category updated"), HttpStatus.OK);
     }

@@ -1,11 +1,13 @@
 package com.calculadora_carbono.backend.controllers;
 
+import com.calculadora_carbono.backend.auth.JWTService;
 import com.calculadora_carbono.backend.dtos.EmissionActivityDTO;
 import com.calculadora_carbono.backend.dtos.MessageDTO;
 import com.calculadora_carbono.backend.dtos.QuantityDTO;
 import com.calculadora_carbono.backend.dtos.ResultDTO;
 import com.calculadora_carbono.backend.dtos.mappers.EmissionActivityMapper;
 import com.calculadora_carbono.backend.services.EmissionActivityService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -22,49 +24,74 @@ public class EmissionActivityController {
 
 
     private final EmissionActivityService service;
+    private final JWTService jwtService;
 
-    @GetMapping("/activities/users/{usersId}")
-    public ResponseEntity<List<EmissionActivityDTO>> findByUsersId(@PathVariable Long usersId) {
+    @GetMapping("/activities")
+    public ResponseEntity<List<EmissionActivityDTO>> findByUsersId(HttpServletRequest request) {
+
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long usersId = jwtService.extractUserId(token);
 
         return new ResponseEntity<>(
                 service.findByUsersId(usersId).stream().map(EmissionActivityMapper::toDTO).toList(), HttpStatus.OK
         );
     }
 
-    @GetMapping("/activities/users/{usersId}/category/{categoryId}")
-    public ResponseEntity<List<EmissionActivityDTO>> findByUsersIdAndCategoryId(@PathVariable Long usersId, @PathVariable Long categoryId) {
+    @GetMapping("/activities/category/{categoryId}")
+    public ResponseEntity<List<EmissionActivityDTO>> findByUsersIdAndCategoryId(HttpServletRequest request, @PathVariable Long categoryId) {
 
-            return new ResponseEntity<>(
-                    service.findByUsersIdAndCategoryId(usersId, categoryId).stream().map(EmissionActivityMapper::toDTO).toList(), HttpStatus.OK
-            );
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long usersId = jwtService.extractUserId(token);
+
+        return new ResponseEntity<>(
+                service.findByUsersIdAndCategoryId(usersId, categoryId).stream().map(EmissionActivityMapper::toDTO).toList(), HttpStatus.OK
+        );
     }
 
-    @PostMapping("/users/{usersId}/category/{categoryId}/activities")
-    public ResponseEntity<MessageDTO> addActivity(@PathVariable Long usersId, @PathVariable Long categoryId, @RequestBody QuantityDTO quantityDTO) {
+    @PostMapping("/category/{categoryId}/activities")
+    public ResponseEntity<MessageDTO> addActivity(HttpServletRequest request, @PathVariable Long categoryId, @RequestBody QuantityDTO quantityDTO) {
+
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long usersId = jwtService.extractUserId(token);
 
         service.addActivity(usersId, categoryId, quantityDTO);
 
         return new ResponseEntity<>(new MessageDTO("Activity added"), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/users/{usersId}/activities/{activityId}")
-    public ResponseEntity<MessageDTO> deleteActivity(@PathVariable Long usersId, @PathVariable Long activityId) {
+    @DeleteMapping("/activities/{activityId}")
+    public ResponseEntity<MessageDTO> deleteActivity(HttpServletRequest request, @PathVariable Long activityId) {
+
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long usersId = jwtService.extractUserId(token);
 
         service.deleteActivity(usersId, activityId);
 
         return new ResponseEntity<>(new MessageDTO("Activity deleted"), HttpStatus.OK);
     }
 
-    @PutMapping("/users/{usersId}/activities/{activityId}")
-    public ResponseEntity<MessageDTO> updateActivity(@PathVariable Long usersId, @PathVariable Long activityId, @RequestBody QuantityDTO quantityDTO) {
+    @PutMapping("/activities/{activityId}")
+    public ResponseEntity<MessageDTO> updateActivity(HttpServletRequest request, @PathVariable Long activityId, @RequestBody QuantityDTO quantityDTO) {
+
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long usersId = jwtService.extractUserId(token);
 
         service.updateActivity(usersId, activityId, quantityDTO);
 
         return new ResponseEntity<>(new MessageDTO("Activity updated"), HttpStatus.OK);
     }
 
-    @GetMapping("/users/{usersId}/emissions")
-    public ResponseEntity<ResultDTO> calculateTotalEmissions(@PathVariable Long usersId) {
+    @GetMapping("/total")
+    public ResponseEntity<ResultDTO> calculateTotalEmissions(HttpServletRequest request) {
+
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long usersId = jwtService.extractUserId(token);
 
         ResultDTO result = new ResultDTO();
 
@@ -73,18 +100,26 @@ public class EmissionActivityController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/users/{usersId}/emissions/{categoryId}")
-    public ResponseEntity<ResultDTO> calculateEmissionsByCategory(@PathVariable Long usersId, @PathVariable Long categoryId) {
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<ResultDTO> calculateEmissionsByCategory(HttpServletRequest request, @PathVariable Long categoryId) {
+
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long usersId = jwtService.extractUserId(token);
 
         ResultDTO result = new ResultDTO();
 
-        result.setResult(service.calculateEmissionsByCategory(usersId, categoryId));
+        result.setResult(service.calculateEmissionsByCategory(categoryId, usersId));
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/users/{usersId}/emissions/day")
-    public ResponseEntity<ResultDTO> calculateEmissionsPerDay(@PathVariable Long usersId, @RequestParam("day") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate day) {
+    @GetMapping("/day")
+    public ResponseEntity<ResultDTO> calculateEmissionsPerDay(HttpServletRequest request, @RequestParam("day") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate day) {
+
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long usersId = jwtService.extractUserId(token);
 
         ResultDTO result = new ResultDTO();
 
@@ -93,10 +128,14 @@ public class EmissionActivityController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/users/{usersId}/emissions/period")
-    public ResponseEntity<ResultDTO> calculateEmissionsPerPeriod(@PathVariable Long usersId,
+    @GetMapping("/period")
+    public ResponseEntity<ResultDTO> calculateEmissionsPerPeriod(HttpServletRequest request,
                                                                  @RequestParam("startDay") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDay,
                                                                  @RequestParam("finalDay") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate finalDay) {
+
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long usersId = jwtService.extractUserId(token);
 
         ResultDTO result = new ResultDTO();
 

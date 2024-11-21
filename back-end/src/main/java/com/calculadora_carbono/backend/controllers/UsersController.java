@@ -28,11 +28,6 @@ public class UsersController {
     private final JWTService jwtService;
 
     @GetMapping
-    public List<UsersDTO> findAll() {
-        return new ResponseEntity<>(service.findAll().stream().map(UsersMapper::toDTO).toList(), HttpStatus.OK).getBody();
-    }
-
-    @GetMapping("/logged")
     public ResponseEntity<UsersDTO> findById(HttpServletRequest request) {
 
         String token = request.getHeader("Authorization").substring(7);
@@ -40,16 +35,24 @@ public class UsersController {
         return new ResponseEntity<>(UsersMapper.toDTO(service.findById(jwtService.extractUserId(token))), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<MessageDTO> deleteUsers(@PathVariable Long id) {
+    @DeleteMapping
+    public ResponseEntity<MessageDTO> deleteUsers(HttpServletRequest request) {
+
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long id = jwtService.extractUserId(token);
 
         service.deleteUsers(id);
 
         return new ResponseEntity<>(new MessageDTO("User deleted"), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<MessageDTO> updateUsers(@PathVariable Long id, @RequestBody UsersDTO usersDTO) {
+    @PutMapping
+    public ResponseEntity<MessageDTO> updateUsers(HttpServletRequest request, @RequestBody UsersDTO usersDTO) {
+
+        String token = request.getHeader("Authorization").substring(7);
+
+        Long id = jwtService.extractUserId(token);
 
         service.updateUsers(id, usersDTO);
 
