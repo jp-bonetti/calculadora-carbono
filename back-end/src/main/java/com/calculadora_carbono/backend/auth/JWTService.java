@@ -1,10 +1,7 @@
 package com.calculadora_carbono.backend.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -14,8 +11,9 @@ import java.time.Instant;
 public class JWTService {
 
     private final JwtEncoder encoder;
+    private final JwtDecoder decoder;
 
-    public String generateToken(String email){
+    public String generateToken(String email, Long userId){
 
         Instant now = Instant.now();
         long expire = 3600L;
@@ -25,8 +23,15 @@ public class JWTService {
                 .subject(email)
                 .expiresAt(now.plusSeconds(expire))
                 .issuedAt(now)
+                .claim("userId", userId)
                 .build();
 
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
+
+    public Long extractUserId(String token) {
+        Jwt jwt = decoder.decode(token);
+        return jwt.getClaim("userId");
+    }
+
 }
