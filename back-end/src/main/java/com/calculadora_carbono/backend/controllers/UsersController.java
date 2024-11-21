@@ -32,7 +32,7 @@ public class UsersController {
         return new ResponseEntity<>(service.findAll().stream().map(UsersMapper::toDTO).toList(), HttpStatus.OK).getBody();
     }
 
-    @GetMapping("/me")
+    @GetMapping("/logged")
     public ResponseEntity<UsersDTO> findById(HttpServletRequest request) {
 
         String token = request.getHeader("Authorization").substring(7);

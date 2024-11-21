@@ -24,6 +24,9 @@ public class Category {
     @Column(nullable = false)
     private Double emissionFactor;
 
+    @ManyToOne
+    private Users users;
+
     @OneToMany(mappedBy = "category")
     private List<EmissionActivity> emissionActivities;
 

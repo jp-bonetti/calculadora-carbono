@@ -1,6 +1,7 @@
 package com.calculadora_carbono.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @ToString(exclude = {"users", "category"})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EmissionActivity {
 
     @Id

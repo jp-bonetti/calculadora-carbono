@@ -29,6 +29,9 @@ public class Users {
     @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<EmissionActivity> emissionActivities;
 
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<Category> categories;
+
     private LocalDateTime creationDate;
     private LocalDateTime changeDate;
 
