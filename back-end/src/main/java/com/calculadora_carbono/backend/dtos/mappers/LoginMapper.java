@@ -7,15 +7,15 @@ public class LoginMapper {
 
     public static LoginDTO toDTO(Users users) {
         LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setName(users.getName());
         loginDTO.setEmail(users.getEmail());
+        loginDTO.setPassword(users.getPassword());
         return loginDTO;
     }
 
     public static Users toEntity(LoginDTO loginDTO) {
         Users login = new Users();
-        login.setName(loginDTO.getName());
         login.setEmail(loginDTO.getEmail());
+        login.setPassword(loginDTO.getPassword());
         return login;
     }
 }

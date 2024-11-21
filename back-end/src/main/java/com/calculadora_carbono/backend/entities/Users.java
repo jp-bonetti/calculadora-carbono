@@ -2,6 +2,7 @@ package com.calculadora_carbono.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,9 @@ public class Users {
 
     @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private String password;
 
     @Column(nullable = false, unique = true)
     private String email;

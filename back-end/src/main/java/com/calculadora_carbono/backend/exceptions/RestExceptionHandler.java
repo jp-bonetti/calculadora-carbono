@@ -12,17 +12,17 @@ import java.util.List;
 @RestControllerAdvice
 public class RestExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> genericException(Exception ex) {
-        ApiError apiError = ApiError
-                .builder()
-                .timestamp(LocalDateTime.now())
-                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.name())
-                .errors(List.of(ex.getMessage()))
-                .build();
-        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ApiError> genericException(Exception ex) {
+//        ApiError apiError = ApiError
+//                .builder()
+//                .timestamp(LocalDateTime.now())
+//                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+//                .status(HttpStatus.INTERNAL_SERVER_ERROR.name())
+//                .errors(List.of(ex.getMessage()))
+//                .build();
+//        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiError> httpMessageNotReadableException(HttpMessageNotReadableException ex) {
@@ -119,6 +119,18 @@ public class RestExceptionHandler {
                 .errors(List.of(ex.getMessage()))
                 .build();
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiError> authenticationException(AuthenticationException ex) {
+        ApiError apiError = ApiError
+                .builder()
+                .timestamp(LocalDateTime.now())
+                .code(HttpStatus.UNAUTHORIZED.value())
+                .status(HttpStatus.UNAUTHORIZED.name())
+                .errors(List.of(ex.getMessage()))
+                .build();
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
 }
 
