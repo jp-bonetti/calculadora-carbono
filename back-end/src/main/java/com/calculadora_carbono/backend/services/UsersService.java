@@ -31,23 +31,6 @@ public class UsersService {
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
-    public void addUsers(Users users) {
-
-        if(users.getName() == null || users.getName().isEmpty()) {
-            throw new RequiredFieldNotFoundException("Name is required");
-        }
-
-        if(users.getEmail() == null || users.getEmail().isEmpty()) {
-            throw new RequiredFieldNotFoundException("Email is required");
-        }
-
-        if(repository.findByEmail(users.getEmail()) != null) {
-            throw new DuplicateEmailException("Email already exists");
-        }
-
-        repository.save(users);
-    }
-
     public void deleteUsers(Long id) {
 
         this.findById(id);

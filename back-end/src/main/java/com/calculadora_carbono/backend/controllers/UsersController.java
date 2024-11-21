@@ -34,15 +34,6 @@ public class UsersController {
         return new ResponseEntity<>(UsersMapper.toDTO(service.findById(id)), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<MessageDTO> addUsers(@RequestBody LoginDTO loginDTO) {
-
-            service.addUsers(LoginMapper.toEntity(loginDTO));
-
-            return new ResponseEntity<>(new MessageDTO("User created"), HttpStatus.CREATED);
-
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageDTO> deleteUsers(@PathVariable Long id) {
 
