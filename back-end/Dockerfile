@@ -2,6 +2,9 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
+COPY /mvnw .
+RUN chmod +x mvnw
+
 COPY . .
 
 RUN ./mvnw clean install
