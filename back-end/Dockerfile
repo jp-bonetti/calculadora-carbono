@@ -4,11 +4,11 @@ RUN apt-get update && apt-get install -y maven
 
 WORKDIR /app
 
-COPY /mvnw .
-
 COPY . .
 
-RUN ./mvnw clean install
+RUN chmod +x mvnw
+
+RUN mvn clean install -DskipTests
 
 EXPOSE 8080
 
