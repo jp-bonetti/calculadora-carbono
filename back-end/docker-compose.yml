@@ -1,0 +1,26 @@
+services:
+  java_app:
+    container_name: java_app
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - java_db
+    environment:
+      DATABASE_URL: jdbc:postgresql://java_db:5432/calculadora_carbono
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      JWT_PRIVATE_KEY: classpath:app.key
+      JWT_PUBLIC_KEY: classpath:app.pub
+
+  java_db:
+    container_name: java_db
+    image: postgres:13
+    environment:
+      POSTGRES_DB: calculadora_carbono
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5432:5432"
