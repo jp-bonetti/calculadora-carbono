@@ -77,6 +77,18 @@ A documentação da API pode ser acessada em `http://localhost:8080/swagger-ui.h
     mvn spring-boot:run
     ```
 
+## Inicialização pelo Docker
+
+Para iniciar a aplicação usando Docker, siga os passos abaixo:
+
+1. Certifique-se de que o Docker e o Docker Compose estão instalados em sua máquina.
+
+2. Navegue até o diretório onde o arquivo `docker-compose.yml` está localizado.
+
+3. Execute o comando abaixo para construir e iniciar os containers:
+   ```sh
+   docker-compose up --build
+
 ## Configuração
 
 O aplicativo usa JWT para autenticação. Certifique-se de ter as configurações necessárias para JWT em seu arquivo `application.properties`.
