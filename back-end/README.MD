@@ -19,6 +19,11 @@ Este projeto é um aplicativo backend para uma calculadora de carbono, construí
 - `repositories`: Repositórios JPA para operações de banco de dados.
 - `services`: Classes de serviço contendo lógica de negócios.
 - `auth`: Serviço JWT para lidar com autenticação.
+- `configs`: Classes de configuração.
+
+## Swagger API
+
+A documentação da API pode ser acessada em `http://localhost:8080/swagger-ui.html`.
 
 ## Endpoints
 

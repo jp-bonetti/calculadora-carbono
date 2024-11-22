@@ -2,7 +2,8 @@ package com.calculadora_carbono.backend.auth;
 
 import com.calculadora_carbono.backend.dtos.LoginDTO;
 import com.calculadora_carbono.backend.entities.Users;
-import com.calculadora_carbono.backend.exceptions.AuthenticationException;
+import com.calculadora_carbono.backend.exceptions.BadRequestException;
+import com.calculadora_carbono.backend.exceptions.LoginException;
 import com.calculadora_carbono.backend.exceptions.DuplicateEmailException;
 import com.calculadora_carbono.backend.repositories.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +21,13 @@ public class AuthenticationService {
     public String authenticate(LoginDTO loginDTO) {
 
         if (loginDTO.getEmail() == null || loginDTO.getPassword() == null) {
-            throw new AuthenticationException("Invalid credentials");
+            throw new LoginException("Invalid credentials");
         }
 
         Users users = usersRepository.findByEmail(loginDTO.getEmail());
 
         if (users == null || !passwordEncoder.matches(loginDTO.getPassword(), users.getPassword())) {
-            throw new AuthenticationException("Invalid credentials");
+            throw new LoginException("Invalid credentials");
         }
 
         return jwtService.generateToken(loginDTO.getEmail(), users.getId());
@@ -35,11 +36,11 @@ public class AuthenticationService {
     public void registerUser(Users users) {
 
         if (users.getName() == null) {
-            throw new AuthenticationException("Name is required");
+            throw new BadRequestException("Name is required");
         }
 
         if (users.getEmail() == null) {
-            throw new AuthenticationException("Email is required");
+            throw new BadRequestException("Email is required");
         }
 
         if (usersRepository.findByEmail(users.getEmail()) != null) {
@@ -47,7 +48,7 @@ public class AuthenticationService {
         }
 
         if (users.getPassword() == null) {
-            throw new AuthenticationException("Password is required");
+            throw new BadRequestException("Password is required");
         }
 
         users.setPassword(passwordEncoder.encode(users.getPassword()));

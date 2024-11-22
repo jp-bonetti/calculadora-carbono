@@ -121,8 +121,8 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ApiError> authenticationException(AuthenticationException ex) {
+    @ExceptionHandler(LoginException.class)
+    public ResponseEntity<ApiError> authenticationException(LoginException ex) {
         ApiError apiError = ApiError
                 .builder()
                 .timestamp(LocalDateTime.now())
@@ -131,6 +131,18 @@ public class RestExceptionHandler {
                 .errors(List.of(ex.getMessage()))
                 .build();
         return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ApiError> badRequestException(BadRequestException ex) {
+        ApiError apiError = ApiError
+                .builder()
+                .timestamp(LocalDateTime.now())
+                .code(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST.name())
+                .errors(List.of(ex.getMessage()))
+                .build();
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 }
 
