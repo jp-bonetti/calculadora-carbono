@@ -16,7 +16,7 @@ services:
 
   java_db:
     container_name: java_db
-    image: postgres:13
+    image: postgres:16
     environment:
       POSTGRES_DB: calculadora_carbono
       POSTGRES_USER: postgres

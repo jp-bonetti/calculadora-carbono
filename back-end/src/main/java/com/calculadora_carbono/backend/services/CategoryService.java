@@ -1,7 +1,9 @@
 package com.calculadora_carbono.backend.services;
 
 import com.calculadora_carbono.backend.dtos.CategoryDTO;
+import com.calculadora_carbono.backend.dtos.CreateCategoryDTO;
 import com.calculadora_carbono.backend.dtos.mappers.CategoryMapper;
+import com.calculadora_carbono.backend.dtos.mappers.CreateCategoryMapper;
 import com.calculadora_carbono.backend.dtos.mappers.UsersMapper;
 import com.calculadora_carbono.backend.entities.Category;
 import com.calculadora_carbono.backend.entities.Users;
@@ -40,11 +42,11 @@ public class CategoryService {
         return repository.findByUsersId(usersId);
     }
 
-    public void addCategory(CategoryDTO categoryDTO, Long usersId) {
+    public void addCategory(CreateCategoryDTO categoryDTO, Long usersId) {
 
         Users users = usersService.findById(usersId);
 
-        Category category = CategoryMapper.toEntity(categoryDTO);
+        Category category = CreateCategoryMapper.toEntity(categoryDTO);
 
         category.setUsers(users);
 
