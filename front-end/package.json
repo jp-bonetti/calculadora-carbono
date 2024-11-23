@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "mkdir -p dist && cp -r index.html js dist"
+    "build": "mkdir -p dist && cp -r index.html css js dist && cp -r node_modules/angular/angular.min.js dist/js && cp -r node_modules/bootstrap/dist/css/bootstrap.min.css dist/css"
   },
   "keywords": [],
   "author": "",
