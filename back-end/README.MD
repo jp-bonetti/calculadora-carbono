@@ -21,9 +21,11 @@ Este projeto é um aplicativo backend para uma calculadora de carbono, construí
 - `auth`: Serviço JWT para lidar com autenticação.
 - `configs`: Classes de configuração.
 
-## Swagger API
+## Swagger API e Deploy
 
-A documentação da API pode ser acessada em `http://localhost:8080/swagger-ui.html`.
+A aplicação foi implantada no Render e a documentação da API foi gerada usando o Swagger.
+
+Os recursos são acessíveis através da URL: `https://calculadora-carbono-8vho.onrender.com/swagger-ui/index.html`.
 
 ## Endpoints
 
@@ -59,7 +61,7 @@ A documentação da API pode ser acessada em `http://localhost:8080/swagger-ui.h
 - **GET /api/category/{categoryId}**: Obtem uma categoria de emissão por ID do usuário autenticado.
 
 
-## Executando a aplicação
+## Executando a aplicação localmente
 
 1. **Clone o repositório**:
     ```sh
@@ -92,3 +94,7 @@ Para iniciar a aplicação usando Docker, siga os passos abaixo:
 ## Configuração
 
 O aplicativo usa JWT para autenticação. Certifique-se de ter as configurações necessárias para JWT em seu arquivo `application.properties`.
+
+## CI/CD
+
+O aplicativo foi configurado com o GitHub Actions para CI/CD. O pipeline de CI/CD é acionado sempre que um push é feito para o repositório na branch master.  
