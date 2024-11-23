@@ -16,6 +16,6 @@ jobs:
     - name: Deploy to Render
       run: |
         curl -X POST \
-          -H "Authorization: Bearer $RENDER_API_KEY" \
+          -H "Authorization: Bearer ${{ vars.RENDER_API_KEY }}" \
           -H "Content-Type: application/json" \
-          https://api.render.com/v1/services/$RENDER_BACKEND_SERVICE_ID/deploys
+          https://api.render.com/v1/services/${{ vars.RENDER_BACKEND_SERVICE_ID }}/deploys
