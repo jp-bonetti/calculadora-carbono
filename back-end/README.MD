@@ -93,7 +93,9 @@ Para iniciar a aplicação usando Docker, siga os passos abaixo:
 
 ## Configuração
 
-O aplicativo usa JWT para autenticação. Certifique-se de ter as configurações necessárias para JWT em seu arquivo `application.properties`.
+O aplicativo usa JWT para autenticação. Certifique-se de ter as configurações necessárias para JWT em seu arquivo 
+`application-dev.properties` durante execução local (PRIVATE KEY e PUBLIC KEY), além de uma instância válida para o 
+banco de dados PostgreSQL.
 
 ## CI/CD
 
