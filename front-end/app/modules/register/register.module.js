@@ -1,0 +1,1 @@
+const registerModule = angular.module('app.register', [])

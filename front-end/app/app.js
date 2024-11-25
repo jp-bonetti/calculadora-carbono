@@ -1,11 +1,21 @@
-const app = angular.module("controleGastosApp", [])
+const app = angular.module('app',
+    ['app.login', 'app.register', 'app.home', 'app.users', 'ngRoute']
+);
 
-app.controller("MainController", function ($scope, $http){
-    $http.get("http://localhost:8080/api/usuarios")
-    .then((response) => {
-        $scope.usuarios = response.data
-    })
-    .catch((error) => {
-        console.error("Erro ao carregar usuários: ", error)
-    })
+app.config(($routeProvider) => {
+    $routeProvider.when('/login', {
+        templateUrl: 'modules/login/login.html',
+        controller: 'LoginController'
+    }).when('/register', {
+        templateUrl: 'modules/register/register.html',
+        controller: 'RegisterController'
+    }).when('/home', {
+        templateUrl: 'modules/home/home.html',
+        controller: 'HomeController'
+    }).when('/users', {
+        templateUrl: 'modules/users/users.html',
+        controller: 'UsersController'
+    }).otherwise({
+        redirectTo: '/home'
+    });
 })

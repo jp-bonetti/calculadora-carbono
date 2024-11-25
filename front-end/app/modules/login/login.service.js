@@ -1,0 +1,1 @@
+const loginService = loginModule.service('LoginService', () => {})

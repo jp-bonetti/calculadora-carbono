@@ -1,0 +1,1 @@
+const usersModule = angular.module('app.users', [])
