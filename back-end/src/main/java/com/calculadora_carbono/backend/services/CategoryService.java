@@ -74,7 +74,7 @@ public class CategoryService {
 
     }
 
-    public void updateCategory(Long id, CategoryDTO categoryDTO, Long usersId) {
+    public void updateCategory(Long id, CreateCategoryDTO categoryDTO, Long usersId) {
 
         Category category = this.findById(id, usersId);
 

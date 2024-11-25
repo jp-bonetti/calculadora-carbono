@@ -109,7 +109,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Category not found", content = @Content(schema = @Schema(implementation = ApiError.class)))
     })
     @PutMapping("/{id}")
-    public ResponseEntity<MessageDTO> updateCategory(HttpServletRequest request, @PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<MessageDTO> updateCategory(HttpServletRequest request, @PathVariable Long id, @RequestBody CreateCategoryDTO categoryDTO) {
 
         String token = request.getHeader("Authorization").substring(7);
 
