@@ -76,7 +76,15 @@ public class CategoryService {
 
     public void updateCategory(Long id, CreateCategoryDTO categoryDTO, Long usersId) {
 
+        Users users = usersService.findById(usersId);
+
         Category category = this.findById(id, usersId);
+
+        category.setUsers(users);
+
+        repository.findByNameAndUsers(category.getName(), users).ifPresent(c -> {
+            throw new CategoryAlreadyExistsException("Category already exists");
+        });
 
         category.setId(id);
         category.setName(categoryDTO.getName());
