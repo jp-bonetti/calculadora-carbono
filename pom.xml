@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.calculadora_carbono</groupId>
-    <artifactId>back-end</artifactId>
+    <artifactId>calculadora-carbono</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>back-end</name>
-    <description>back-end</description>
+    <name>calculadora-carbono</name>
+    <description>calculadora-carbono</description>
     <url/>
     <licenses>
         <license/>
