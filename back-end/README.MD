@@ -65,7 +65,7 @@ Os recursos são acessíveis através da URL: `https://calculadora-carbono-8vho.
 
 1. **Clone o repositório**:
     ```sh
-    git clone https://github.com/bonetticrvg/calculadora-carbono.git
+    git clone https://github.com/jp-bonetti/calculadora-carbono.git
     cd calculadora-carbono
     ```
 
