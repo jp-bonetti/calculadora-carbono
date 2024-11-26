@@ -1,1 +1,0 @@
-const registerService = registerModule.service('RegisterService', () => {})
